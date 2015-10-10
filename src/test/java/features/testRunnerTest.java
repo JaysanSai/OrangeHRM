@@ -8,6 +8,11 @@ import cucumber.api.junit.Cucumber;
 @CucumberOptions( format = {"pretty", "html:target/cucumber", "json:target/cucumber.json"}
 ,glue="stepDefinitions"
 )
+/**
+ * 
+ * @author sanjaysai
+ *
+ */
 public class testRunnerTest {
 	
 }
