@@ -3,6 +3,7 @@ package stepDefinitions;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
 
@@ -123,8 +124,11 @@ public class AddEmployee {
 	
 		employeeListPage.getSearchIdBox().sendKeys(id);
 		employeeListPage.getSearchButton().click();
-		Thread.sleep(4000);
-		Assert.assertTrue(employeeListPage.verifyEmployeeAdded(id, lastName));
+		
+		
+		Assert.assertEquals(id.trim(), driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[2]")).getText().trim());
+		Assert.assertEquals(lastName.trim(), driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[4]")).getText().trim());
+		
 		driver.close();
 	}
 

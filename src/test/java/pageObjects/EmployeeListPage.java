@@ -25,7 +25,7 @@ public class EmployeeListPage {
 
 	@FindBy(xpath = ".//*[@id='empsearch_id']")
 	WebElement searchIdBox;
-
+/*
 	public boolean verifyEmployeeAdded(String id, String lastName) {
 	
 		
@@ -38,6 +38,7 @@ public class EmployeeListPage {
 
 		return false;
 	}
+	*/
 
 	public WebElement getSearchIdBox() {
 		return searchIdBox;
