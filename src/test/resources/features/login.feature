@@ -10,7 +10,7 @@ Feature: OrangeHRM Login
     #Given I am in OrangeHRM login page:url,http://enterprise.demo.orangehrmlive.com
     Given I am in OrangeHRM login page
 
-  @adminLogin
+  @adminLogin @smokeTest
   Scenario: Admin login with valid credential
     #Never use colon (:) after Given, When, And and Then keywords
     #Given I am in OrangeHRM login page
