@@ -15,7 +15,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import domains.LoginDomain;
+
 
 
 public class Login{
@@ -26,11 +26,12 @@ public class Login{
 	
 	public Login(WebDriverConfig driverConfig, 
 			PropertiesConfig propertiesConfig, 
-			LoginDomain loginDomain) throws IOException{
+			LoginPage loginPage,
+			DashboardPage dashboardPage) throws IOException{
 		this.driver=driverConfig.initialize_webdriver();
 		this.properties=propertiesConfig.loadPropertiesFile();
-		this.loginPage=loginDomain.initialize_LoginPage_Objects();
-		this.dashboardPage=loginDomain.initialize_dashboardPage();
+		this.loginPage=loginPage;
+		this.dashboardPage=dashboardPage;
 	}
 	
 	

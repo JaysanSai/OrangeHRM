@@ -1,12 +1,9 @@
 package stepDefinitions;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.tools.ant.taskdefs.WaitFor.Unit;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import pageObjects.AddEmployeePage;
@@ -21,7 +18,6 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import domains.NavigationDomain;
 
 public class AddEmployee {
 
@@ -32,7 +28,7 @@ public class AddEmployee {
 	PageNavigateObjects navigate;
 	AddEmployeePage addEmployeePage;
 	EmployeeDetailsPage employeeDetailsPage;
-	Helper helper;
+	
 	EmployeeListPage employeeListPage;
 
 	String newEmployeeFullName;
@@ -40,17 +36,17 @@ public class AddEmployee {
 	String id;
 
 	public AddEmployee(Login loginSteps, WebDriverConfig driver,
-			NavigationDomain navigate,
-			EmployeeDetailsPage employeeDetailsPage, Helper helper,
+			PageNavigateObjects navigate,
+			EmployeeDetailsPage employeeDetailsPage,
 			AddEmployeePage addEmployeePage,
 			EmployeeListPage employeeListPage) {
 
 		this.loginSteps = loginSteps;
 		this.driver = driver.initialize_webdriver();
-		this.navigate = navigate.initialize_Navigation_Objects();
+		this.navigate = navigate;
 	
 		this.employeeDetailsPage = employeeDetailsPage;
-		this.helper = helper;
+		
 		this.addEmployeePage=addEmployeePage;
 		this.employeeListPage=employeeListPage;
 	}
