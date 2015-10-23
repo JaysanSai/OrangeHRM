@@ -1,38 +1,51 @@
 package stepDefinitions;
 
 
-import java.util.List;
+import java.io.IOException;
+import java.util.Properties;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.PageFactory;
-
-
-
 
 import pageObjects.DashboardPage;
 import pageObjects.LoginPage;
+import utilities.PropertiesConfig;
+import utilities.WebDriverConfig;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import domains.LoginDomain;
 
-public class Login {
-	WebDriver driver=new FirefoxDriver();
-	LoginPage LoginPageObject;
-	DashboardPage dashboardObject;
-	String username;
+
+public class Login{
+	WebDriver driver;
+	Properties properties;
+	LoginPage loginPage;
+	DashboardPage dashboardPage;
 	
+	public Login(WebDriverConfig driverConfig, 
+			PropertiesConfig propertiesConfig, 
+			LoginDomain loginDomain) throws IOException{
+		this.driver=driverConfig.initialize_webdriver();
+		this.properties=propertiesConfig.loadPropertiesFile();
+		this.loginPage=loginDomain.initialize_LoginPage_Objects();
+		this.dashboardPage=loginDomain.initialize_dashboardPage();
+	}
+	
+	
+	
+
 	
 	//{{ Admin Login test with valid credential
 	
-	@Given("^I am in OrangeHRM login page:(.*)")
-	public void i_am_in_OrangeHRM_login_page(List<String> homeUrl) throws Throwable {
+	//@Given("^I am in OrangeHRM login page:(.*)")--To use with comment 1 in login feature
+	@Given("^I am in OrangeHRM login page$")
+	public void i_am_in_OrangeHRM_login_page() throws IOException{
 	
 	//@Given("^I am in OrangeHRM login page$")
 	//public void i_am_in_OrangeHRM_login_page(List<String> homeUrl) throws Throwable {
-		driver.get(homeUrl.get(1));
+		driver.get(properties.getProperty("url"));
 		//System.out.println(homeUrl.get(1));
 	    // Write code here that turns the phrase above into concrete actions
 	    // For automatic transformation, change DataTable to one of
@@ -41,13 +54,12 @@ public class Login {
 	   // throw new PendingException();
 	}
 
-	@When("^I entered admin username as \"([^\"]*)\" and password as \"([^\"]*)\"$")
-	public void i_entered_admin_username_as_and_password_as(String username, String password) throws Throwable {
-		this.username=username;
-		LoginPageObject=PageFactory.initElements(driver, LoginPage.class);
-	  
-	    LoginPageObject.getUsernameField().sendKeys(username);
-	    LoginPageObject.getPasswordField().sendKeys(password);
+	@When("^I entered valid username and password$")
+	public void i_entered_valid_username_and_password() throws IOException{
+		
+		
+		loginPage.getUsernameField().sendKeys(properties.getProperty("userName"));
+		loginPage.getPasswordField().sendKeys(properties.getProperty("passWord"));
 	   
 		// Write code here that turns the phrase above into concrete actions
 	   // throw new PendingException();
@@ -55,17 +67,18 @@ public class Login {
 
 	@And("^I clicked on Login button$")
 	public void i_clicked_on_Login_button() throws Throwable {
-		 LoginPageObject.getLoginButton().click();
+		loginPage.getLoginButton().click();
 	    // Write code here that turns the phrase above into concrete actions
 	    //throw new PendingException();
 	}
 
 	@Then("^Login is successful$")
 	public void login_is_successful() throws Throwable {
-		dashboardObject=PageFactory.initElements(driver, DashboardPage.class);
+		
 		//assertThat(dashboardObject.getWelcomeUsernameLink().getText(), containsString("username"));
 	    //Assert.assertThat(dashboardObject.getWelcomeUsernameLink().getText(), anyOf(username));
-		Assert.assertTrue(dashboardObject.getWelcomeUsernameLink().getText().contains(username));
+		
+		Assert.assertTrue(dashboardPage.getWelcomeUsernameLink().getText().contains(properties.getProperty("userName")));
 		
 		driver.close();
 		// Write code here that turns the phrase above into concrete actions
@@ -76,18 +89,18 @@ public class Login {
 
 	//{{ Login Test with invalid credentials
 	
-	@When("^I entered username as?(.*) and password as? (.*)$")
+	@When("^I entered username as?(.*) and password as?(.*)$")
 	public void i_entered_username_and_password(String invalidUsername, String invalidPassword) throws Throwable {
-		LoginPageObject=PageFactory.initElements(driver, LoginPage.class);
-		LoginPageObject.getUsernameField().sendKeys(invalidUsername);
-	    LoginPageObject.getPasswordField().sendKeys(invalidPassword);
+		
+		loginPage.getUsernameField().sendKeys(invalidUsername);
+		loginPage.getPasswordField().sendKeys(invalidPassword);
 		// Write code here that turns the phrase above into concrete actions
 	    //throw new PendingException();
 	}
 	
-	@And("^I clicked on Login Button$")
+	@And("^I clicked on the Login button$")
 	public void i_clicked_on_Login_Button() throws Throwable {
-		 LoginPageObject.getLoginButton().click();
+		loginPage.getLoginButton().click();
 	    // Write code here that turns the phrase above into concrete actions
 	   // throw new PendingException();
 	}
