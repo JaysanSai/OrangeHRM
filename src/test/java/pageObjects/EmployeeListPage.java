@@ -1,6 +1,5 @@
 package pageObjects;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,8 +19,7 @@ public class EmployeeListPage {
 	@FindBy(xpath = ".//*[@id='searchBtn']")
 	WebElement searchButton;
 
-	@FindBy(xpath = ".//*[@id='resultTable']")
-	WebElement employeeListTable;
+
 
 	@FindBy(xpath = ".//*[@id='empsearch_id']")
 	WebElement searchIdBox;
@@ -47,5 +45,6 @@ public class EmployeeListPage {
 	public WebElement getSearchButton() {
 		return searchButton;
 	}
+
 
 }
