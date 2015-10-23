@@ -125,7 +125,7 @@ public class AddEmployee {
 		employeeListPage.getSearchIdBox().sendKeys(id);
 		employeeListPage.getSearchButton().click();
 		
-		
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		Assert.assertEquals(id.trim(), driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[2]")).getText().trim());
 		Assert.assertEquals(lastName.trim(), driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[4]")).getText().trim());
 		
