@@ -20,6 +20,8 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+
+
 public class AddEmployee {
 
 	WebDriver driver;
@@ -63,6 +65,7 @@ public class AddEmployee {
 	@When("^I clicked on the PIM menu$")
 	public void i_clicked_on_the_PIM_menu() throws Throwable {
 		navigate.getNavigate2PIMPage().click();
+		System.out.println("I just clicked PIM");
 	}
 
 	@And("^I clicked on the add employee sub-menu$")
@@ -121,13 +124,18 @@ public class AddEmployee {
 		System.out.println("Employee Id="+id);
 		
 		navigate.getNavigate2PIMPage().click();
+		System.out.println("I just clicked on PIM again to verify employee added");
 	
 		employeeListPage.getSearchIdBox().sendKeys(id);
+		System.out.println("id entered in search box");
 		employeeListPage.getSearchButton().click();
-	Thread.sleep(5000);
-		Assert.assertEquals(lastName.trim(), driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[4]")).getText().trim());
-		Assert.assertEquals(id.trim(), driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[2]")).getText().trim());
+		System.out.println("search button clicked");
 		
+	Thread.sleep(5000);
+	System.out.println("entering to last name assertion test");
+		Assert.assertEquals(lastName.trim(), driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[4]")).getText().trim());
+		System.out.println("entering to id assertion test");
+		Assert.assertEquals(id.trim(), driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[2]")).getText().trim());
 		driver.close();
 	}
 
