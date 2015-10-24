@@ -120,7 +120,7 @@ public class AddEmployee {
 		id=employeeDetailsPage.employeeId.getAttribute("value");
 		System.out.println("Employee Id="+id);
 		
-		this.i_clicked_on_the_PIM_menu();
+		navigate.getNavigate2PIMPage().click();
 	
 		employeeListPage.getSearchIdBox().sendKeys(id);
 		employeeListPage.getSearchButton().click();
