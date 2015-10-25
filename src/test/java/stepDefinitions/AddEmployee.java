@@ -113,7 +113,7 @@ public class AddEmployee {
 
 	@Then("^Employee added successfully$")
 	public void employee_added_successfully() throws Throwable {
-		//driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		/*
 		System.out.println(employeeDetailsPage.getProfilePictureName().getText());
 		System.out.println(newEmployeeFullName.trim());
