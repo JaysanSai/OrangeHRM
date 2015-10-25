@@ -35,8 +35,9 @@ public class AddEmployee {
 	EmployeeListPage employeeListPage;
 
 	String newEmployeeFullName;
-	String lastName;
-	String id;
+	String expectedlastName;
+	String expectedid;
+	String actualLastName;
 
 	public AddEmployee(Login loginSteps, WebDriverConfig driver,
 			PageNavigateObjects navigate,
@@ -85,7 +86,7 @@ public class AddEmployee {
 	@Given("^I entered First Name as?(.*), Middle Name as?(.*) and Last Name as?(.*)$")
 	public void i_entered_Employee_full_Names(String firstName,
 			String middleName, String lastName) throws Throwable {
-		this.lastName=lastName;
+		this.expectedlastName=lastName;
 
 		addEmployeePage.getFirstNameField().sendKeys(firstName);
 		addEmployeePage.getMiddleNameField().sendKeys(middleName);
@@ -113,6 +114,7 @@ public class AddEmployee {
 
 	@Then("^Employee added successfully$")
 	public void employee_added_successfully() throws Throwable {
+		actualLastName="";
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		/*
 		System.out.println(employeeDetailsPage.getProfilePictureName().getText());
@@ -120,22 +122,26 @@ public class AddEmployee {
 		Assert.assertTrue(employeeDetailsPage.getProfilePictureName().getText().equals(newEmployeeFullName.trim()));
 		*/
 		
-		id=employeeDetailsPage.employeeId.getAttribute("value");
-		System.out.println("Employee Id="+id);
+		expectedid=employeeDetailsPage.employeeId.getAttribute("value");
+		System.out.println("Employee Id="+expectedid);
 		
 		navigate.getNavigate2PIMPage().click();
 		System.out.println("I just clicked on PIM again to verify employee added");
 	
-		employeeListPage.getSearchIdBox().sendKeys(id);
+		employeeListPage.getSearchIdBox().sendKeys(expectedid);
 		System.out.println("id entered in search box");
 		employeeListPage.getSearchButton().click();
 		System.out.println("search button clicked");
 		
 	Thread.sleep(5000);
 	System.out.println("entering to last name assertion test");
-		Assert.assertEquals(lastName.trim(), driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[4]")).getText().trim());
+	System.out.println("actual last name= "+actualLastName);
+	actualLastName=driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[4]")).getText().trim();
+	System.out.println("actual last name= "+actualLastName);
+	
+	Assert.assertEquals(expectedlastName.trim(),actualLastName);
 		System.out.println("entering to id assertion test");
-		Assert.assertEquals(id.trim(), driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[2]")).getText().trim());
+		Assert.assertEquals(expectedid.trim(), driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[2]")).getText().trim());
 		driver.close();
 	}
 
