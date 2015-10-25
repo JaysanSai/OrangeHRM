@@ -4,7 +4,7 @@
 	<groupId>MyCompanyName</groupId>
 	<artifactId>OrangeHRM</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	
+	<build>
 	<plugins>
 	<plugin>
     <groupId>org.apache.maven.plugins</groupId>
@@ -16,7 +16,7 @@
     </configuration>
 </plugin>
 	</plugins>
-
+</build>
 	<dependencies>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
