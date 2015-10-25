@@ -11,7 +11,9 @@ public class PageNavigateObjects {
 WebDriver driver;
 	
 	public PageNavigateObjects(WebDriverConfig driverConfig){
+	
 		this.driver=driverConfig.initialize_webdriver();
+		
 		PageFactory.initElements(driver, this);
 	}
 
