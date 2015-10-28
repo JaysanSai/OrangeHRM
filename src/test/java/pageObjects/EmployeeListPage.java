@@ -23,20 +23,12 @@ public class EmployeeListPage {
 
 	@FindBy(xpath = ".//*[@id='empsearch_id']")
 	WebElement searchIdBox;
-/*
-	public boolean verifyEmployeeAdded(String id, String lastName) {
 	
-		
-		if(driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[2]")).getText().trim().equals(id.trim())&&
-				driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[4]")).getText().trim().equals(lastName.trim()))
-		{
-			return true;
-		}
-		
-
-		return false;
-	}
-	*/
+	
+	// .//*[@id='resultTable']/tbody/tr[1]/td[4] first row from all employees list
+	@FindBy(xpath=".//*[@id='resultTable']/tbody/tr/td[4]")// first  row from filtered employee list after search
+	WebElement searchedLastName;
+	
 
 	public WebElement getSearchIdBox() {
 		return searchIdBox;
@@ -46,5 +38,7 @@ public class EmployeeListPage {
 		return searchButton;
 	}
 
-
+	public WebElement getSearchedLastName(){
+		return searchedLastName;
+	}
 }

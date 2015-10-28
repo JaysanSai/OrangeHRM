@@ -1,5 +1,6 @@
 package stepDefinitions;
 
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
@@ -31,28 +32,29 @@ public class AddEmployee {
 	PageNavigateObjects navigate;
 	AddEmployeePage addEmployeePage;
 	EmployeeDetailsPage employeeDetailsPage;
-	
 	EmployeeListPage employeeListPage;
 
 	String newEmployeeFullName;
 	String expectedlastName;
 	String expectedid;
 	String actualLastName;
+	Properties properties;
 
 	public AddEmployee(Login loginSteps, WebDriverConfig driver,
-			PageNavigateObjects navigate,
+			PageNavigateObjects navigate, Properties properties,
 			EmployeeDetailsPage employeeDetailsPage,
 			AddEmployeePage addEmployeePage,
-			EmployeeListPage employeeListPage) {
+			EmployeeListPage employeeListPage
+			) {
 
 		this.loginSteps = loginSteps;
 		this.driver = driver.initialize_webdriver();
 		this.navigate = navigate;
-	
+		this.properties=properties;
 		this.employeeDetailsPage = employeeDetailsPage;
-		
-		this.addEmployeePage=addEmployeePage;
 		this.employeeListPage=employeeListPage;
+		this.addEmployeePage=addEmployeePage;
+		
 	}
 
 	@Given("^I am logged as Admin$")
@@ -125,18 +127,24 @@ public class AddEmployee {
 		expectedid=employeeDetailsPage.employeeId.getAttribute("value");
 		System.out.println("Employee Id="+expectedid);
 		
+		
+		//driver.navigate().to(properties.getProperty("urlPIM"));
 		navigate.getNavigate2PIMPage().click();
-		System.out.println("I just clicked on PIM again to verify employee added");
+		//System.out.println("I just clicked on PIM again to verify employee added");
+		System.out.println("navigating to PIM page");
+		
 	
+		
 		employeeListPage.getSearchIdBox().sendKeys(expectedid);
 		System.out.println("id entered in search box");
+		
 		employeeListPage.getSearchButton().click();
 		System.out.println("search button clicked");
 		
-	Thread.sleep(5000);
+	
 	System.out.println("entering to last name assertion test");
 	System.out.println("actual last name= "+actualLastName);
-	actualLastName=driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[4]")).getText().trim();
+	actualLastName=employeeListPage.getSearchedLastName().getText().trim();
 	System.out.println("actual last name= "+actualLastName);
 	
 	Assert.assertEquals(expectedlastName.trim(),actualLastName);
