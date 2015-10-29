@@ -7,7 +7,6 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
-
 import pageObjects.AddEmployeePage;
 import pageObjects.DashboardPage;
 import pageObjects.EmployeeDetailsPage;
@@ -26,6 +25,7 @@ import cucumber.api.java.en.When;
 public class AddEmployee {
 
 	WebDriver driver;
+
 	LoginPage LoginPageObject;
 	DashboardPage dashboardPage;
 	Login loginSteps;
@@ -141,7 +141,7 @@ public class AddEmployee {
 		employeeListPage.getSearchButton().click();
 		System.out.println("search button clicked");
 		
-	
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	System.out.println("entering to last name assertion test");
 	System.out.println("actual last name= "+actualLastName);
 	actualLastName=employeeListPage.getSearchedLastName().getText().trim();
