@@ -18,6 +18,11 @@ Feature: OrangeHRM Login
     When I entered valid username and password
     And I clicked on Login button
     Then Login is successful
+    
+    Scenario: Login with valid credential
+    When I entered correct username and password
+    And I clicked on Login button
+    Then Login is successful
 
   Scenario Outline: Login test for invalid credentials
     When I entered username as <username> and password as <password>

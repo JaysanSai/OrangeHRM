@@ -43,10 +43,41 @@ public class AddEmployeePage {
 	
 	@FindBy(xpath=".//*[@id='btnSave']")
 	WebElement addEmployeeSaveButton;
-
+	
+	@FindBy(xpath=".//*[@id='chkLogin']")
+	WebElement createLoginDetailCheckbox;
+	
+	@FindBy(xpath=".//*[@id='user_name']")
+	WebElement usernametxtBox;
+			
+	@FindBy(xpath=".//*[@id='user_password']")
+	WebElement passwordtxtBox;
+					
+	@FindBy(xpath=".//*[@id='re_password']")
+	WebElement confirmPasswordtxtBox;
+	
+	
 	public WebElement getPageHeading() {
 		return pageHeading;
 	}
+
+	public WebElement getCreateLoginDetailCheckbox() {
+		return createLoginDetailCheckbox;
+	}
+
+	public WebElement getUsernametxtBox() {
+		return usernametxtBox;
+	}
+
+	public WebElement getPasswordtxtBox() {
+		return passwordtxtBox;
+	}
+
+	public WebElement getConfirmPasswordtxtBox() {
+		return confirmPasswordtxtBox;
+	}
+
+
 
 	public WebElement getFirstNameField() {
 		return firstNameField;

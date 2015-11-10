@@ -26,7 +26,7 @@ public class EmployeeListPage {
 	
 	
 	// .//*[@id='resultTable']/tbody/tr[1]/td[4] first row from all employees list
-	@FindBy(xpath=".//*[@id='resultTable']/tbody/tr/td[4]")// first  row from filtered employee list after search
+	@FindBy(xpath=".//*[@id='resultTable']/tbody/tr[1]/td[4]")// first  row from filtered employee list after search
 	WebElement searchedLastName;
 	
 
@@ -41,4 +41,6 @@ public class EmployeeListPage {
 	public WebElement getSearchedLastName(){
 		return searchedLastName;
 	}
+	
+	
 }

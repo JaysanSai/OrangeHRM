@@ -34,7 +34,12 @@ public class Login{
 		this.dashboardPage=dashboardPage;
 	}
 	
-	
+	//Login with valid account
+	@When("^I entered correct username and password$")
+	public void i_entered_correct_username_and_password(String username, String password) throws Throwable {
+		loginPage.getUsernameField().sendKeys(username);
+		loginPage.getPasswordField().sendKeys(password);
+	}
 	
 
 	
@@ -48,11 +53,7 @@ public class Login{
 	//public void i_am_in_OrangeHRM_login_page(List<String> homeUrl) throws Throwable {
 		driver.get(properties.getProperty("url"));
 		//System.out.println(homeUrl.get(1));
-	    // Write code here that turns the phrase above into concrete actions
-	    // For automatic transformation, change DataTable to one of
-	    // List<YourType>, List<List<E>>, List<Map<K,V>> or Map<K,V>.
-	    // E,K,V must be a scalar (String, Integer, Date, enum etc)
-	   // throw new PendingException();
+	   
 	}
 
 	@When("^I entered valid username and password$")

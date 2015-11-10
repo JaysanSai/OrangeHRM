@@ -1,12 +1,15 @@
 package stepDefinitions;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.tools.ant.taskdefs.WaitFor.Unit;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
+
 import pageObjects.AddEmployeePage;
 import pageObjects.DashboardPage;
 import pageObjects.EmployeeDetailsPage;
@@ -38,13 +41,17 @@ public class AddEmployee {
 	String expectedlastName;
 	String expectedid;
 	String actualLastName;
+	String validUsername="";
+	String validPassword="";
+	String newEmployeeFirstName="";
 	Properties properties;
 
 	public AddEmployee(Login loginSteps, WebDriverConfig driver,
 			PageNavigateObjects navigate, Properties properties,
 			EmployeeDetailsPage employeeDetailsPage,
 			AddEmployeePage addEmployeePage,
-			EmployeeListPage employeeListPage
+			EmployeeListPage employeeListPage,
+			DashboardPage dashboardPage
 			) {
 
 		this.loginSteps = loginSteps;
@@ -54,7 +61,7 @@ public class AddEmployee {
 		this.employeeDetailsPage = employeeDetailsPage;
 		this.employeeListPage=employeeListPage;
 		this.addEmployeePage=addEmployeePage;
-		
+		this.dashboardPage=dashboardPage;
 	}
 
 	@Given("^I am logged as Admin$")
@@ -113,6 +120,52 @@ public class AddEmployee {
 		
 		addEmployeePage.getAddEmployeeSaveButton().click();
 	}
+	
+	//{{Steps for creating user login account while adding new employee
+	
+@Given("^I entered employee information as below$")
+public void i_entered_employee_information_as_below(List<String> names) throws Throwable {
+	newEmployeeFirstName=names.get(0);
+	addEmployeePage.getFirstNameField().sendKeys(names.get(0));
+	addEmployeePage.getMiddleNameField().sendKeys(names.get(1));
+	addEmployeePage.getLastNameField().sendKeys(names.get(2));
+}
+
+@Given("^I clicked the create login details checkbox$")
+public void i_clicked_the_create_login_details_checkbox() throws Throwable {
+    // Write code here that turns the phrase above into concrete actions
+  addEmployeePage.getCreateLoginDetailCheckbox().click();
+}
+
+@Given("^I entered following login details$")
+public void i_entered_following_login_details(List<String> loginData) throws Throwable {
+	validUsername=loginData.get(0);
+	validPassword=loginData.get(1);
+	addEmployeePage.getUsernametxtBox().sendKeys(loginData.get(0));
+	addEmployeePage.getPasswordtxtBox().sendKeys(loginData.get(1));
+	addEmployeePage.getConfirmPasswordtxtBox().sendKeys(loginData.get(1));
+
+   }
+
+@Then("^Employee login account created successfully$")
+public void employee_login_account_created_successfully() throws Throwable {
+    // Write code here that turns the phrase above into concrete actions
+	//Select select = new Select(driver.findElement(By.xpath(".//*[@id='welcome']")));
+	//select.selectByVisibleText("Logout");
+	driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+	driver.findElement(By.xpath(".//*[@id='welcome']")).click();
+	driver.findElement(By.xpath(".//*[@id='welcome-menu']/ul/li[2]/a")).click();
+	
+	
+	loginSteps.i_am_in_OrangeHRM_login_page();
+    loginSteps.i_entered_correct_username_and_password(validUsername, validPassword);
+    loginSteps.i_clicked_on_Login_button();
+    Assert.assertTrue(dashboardPage.getWelcomeUsernameLink().getText().contains(newEmployeeFirstName));
+	driver.close();
+}
+
+//}}
+
 
 	@Then("^Employee added successfully$")
 	public void employee_added_successfully() throws Throwable {
@@ -128,7 +181,7 @@ public class AddEmployee {
 		System.out.println("Employee Id="+expectedid);
 		
 		
-		//driver.navigate().to(properties.getProperty("urlPIM"));
+		//driver.navigate().to("http://enterprise.demo.orangehrmlive.com/pim/viewEmployeeList");
 		navigate.getNavigate2PIMPage().click();
 		//System.out.println("I just clicked on PIM again to verify employee added");
 		System.out.println("navigating to PIM page");
@@ -140,16 +193,14 @@ public class AddEmployee {
 		
 		employeeListPage.getSearchButton().click();
 		System.out.println("search button clicked");
+	
 		
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	System.out.println("entering to last name assertion test");
 	System.out.println("actual last name= "+actualLastName);
 	actualLastName=employeeListPage.getSearchedLastName().getText().trim();
 	System.out.println("actual last name= "+actualLastName);
 	
 	Assert.assertEquals(expectedlastName.trim(),actualLastName);
-		System.out.println("entering to id assertion test");
-		Assert.assertEquals(expectedid.trim(), driver.findElement(By.xpath(".//*[@id='resultTable']/tbody/tr/td[2]")).getText().trim());
 		driver.close();
 	}
 

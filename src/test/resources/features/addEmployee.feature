@@ -2,7 +2,7 @@ Feature: Add New Employee in the database
   This will automate add new employee feature of the system
 
   Background: Go to Add Employee page
-  	Given I am logged as Admin
+    Given I am logged as Admin
     When I clicked on the PIM menu
     And I clicked on the add employee sub-menu
     Then Add Employee page is successfully displayed
@@ -25,4 +25,15 @@ Feature: Add New Employee in the database
       | First Name | Middle Name | Last Name |
       | Jay        |             | Yes       |
       | Kiran      | Lal         | Gurung    |
-     
+
+  @addEmpAndCreateAccount
+  Scenario: Create user login account while adding new employee
+    Given I entered employee information as below
+      | Rajesh | Bishow | Karma |
+    And I clicked the create login details checkbox
+    And I entered following login details
+      | rKarma | chlosa184 |
+    And I chose the location
+    When I clicked the save button
+    Then Employee login account created successfully
+    #And Employee added successfully
