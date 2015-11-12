@@ -23,6 +23,12 @@ Feature: OrangeHRM Login
     When I entered correct username and password
     And I clicked on Login button
     Then Login is successful
+    
+    @logout
+    Scenario: Logout test
+    And I am logged with valid account
+    When I clicked on the logout link
+    Then I should be successfully logged out
 
   Scenario Outline: Login test for invalid credentials
     When I entered username as <username> and password as <password>

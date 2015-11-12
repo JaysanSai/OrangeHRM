@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.tools.ant.taskdefs.WaitFor.Unit;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import pageObjects.AddEmployeePage;
 import pageObjects.DashboardPage;
@@ -28,7 +29,7 @@ import cucumber.api.java.en.When;
 public class AddEmployee {
 
 	WebDriver driver;
-
+	WebDriverWait wait;
 	LoginPage LoginPageObject;
 	DashboardPage dashboardPage;
 	Login loginSteps;
@@ -116,9 +117,8 @@ public class AddEmployee {
 
 	@When("^I clicked the save button$")
 	public void i_clicked_the_save_button() throws Throwable {
-		
-		
 		addEmployeePage.getAddEmployeeSaveButton().click();
+		Thread.sleep(10000);
 	}
 	
 	//{{Steps for creating user login account while adding new employee
@@ -139,27 +139,30 @@ public void i_clicked_the_create_login_details_checkbox() throws Throwable {
 
 @Given("^I entered following login details$")
 public void i_entered_following_login_details(List<String> loginData) throws Throwable {
-	validUsername=loginData.get(0);
-	validPassword=loginData.get(1);
-	addEmployeePage.getUsernametxtBox().sendKeys(loginData.get(0));
-	addEmployeePage.getPasswordtxtBox().sendKeys(loginData.get(1));
-	addEmployeePage.getConfirmPasswordtxtBox().sendKeys(loginData.get(1));
+	validUsername=loginData.get(0).trim();
+	validPassword=loginData.get(1).trim();
+	addEmployeePage.getUsernametxtBox().sendKeys(validUsername);
+	addEmployeePage.getPasswordtxtBox().sendKeys(validPassword);
+	addEmployeePage.getConfirmPasswordtxtBox().sendKeys(validPassword);
 
    }
 
 @Then("^Employee login account created successfully$")
 public void employee_login_account_created_successfully() throws Throwable {
-    // Write code here that turns the phrase above into concrete actions
-	//Select select = new Select(driver.findElement(By.xpath(".//*[@id='welcome']")));
-	//select.selectByVisibleText("Logout");
-	driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-	driver.findElement(By.xpath(".//*[@id='welcome']")).click();
-	driver.findElement(By.xpath(".//*[@id='welcome-menu']/ul/li[2]/a")).click();
+    wait=new WebDriverWait(driver, 10);
+	//first logout and log back in with the ids just created
+	loginSteps.i_clicked_on_the_logout_link();
 	
+	
+	// logging back in
 	
 	loginSteps.i_am_in_OrangeHRM_login_page();
     loginSteps.i_entered_correct_username_and_password(validUsername, validPassword);
     loginSteps.i_clicked_on_Login_button();
+    
+    wait.until(ExpectedConditions.elementToBeClickable(dashboardPage.getWelcomeUsernameLink()));
+    
+    //driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     Assert.assertTrue(dashboardPage.getWelcomeUsernameLink().getText().contains(newEmployeeFirstName));
 	driver.close();
 }
@@ -179,21 +182,17 @@ public void employee_login_account_created_successfully() throws Throwable {
 		
 		expectedid=employeeDetailsPage.employeeId.getAttribute("value");
 		System.out.println("Employee Id="+expectedid);
-		
-		
+	
 		//driver.navigate().to("http://enterprise.demo.orangehrmlive.com/pim/viewEmployeeList");
 		navigate.getNavigate2PIMPage().click();
 		//System.out.println("I just clicked on PIM again to verify employee added");
 		System.out.println("navigating to PIM page");
-		
-	
 		
 		employeeListPage.getSearchIdBox().sendKeys(expectedid);
 		System.out.println("id entered in search box");
 		
 		employeeListPage.getSearchButton().click();
 		System.out.println("search button clicked");
-	
 		
 	System.out.println("entering to last name assertion test");
 	System.out.println("actual last name= "+actualLastName);

@@ -3,8 +3,10 @@ package stepDefinitions;
 
 import java.io.IOException;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import pageObjects.DashboardPage;
@@ -41,7 +43,28 @@ public class Login{
 		loginPage.getPasswordField().sendKeys(password);
 	}
 	
+	//{{logout steps
+	
+	@Given("^I am logged with valid account$")
+	public void i_am_logged_with_valid_account() throws Throwable {
+		i_entered_valid_username_and_password();
+		i_clicked_on_Login_button();
+	}
 
+	@When("^I clicked on the logout link$")
+	public void i_clicked_on_the_logout_link() throws Throwable {
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		driver.findElement(By.xpath(".//*[@id='welcome']")).click();
+		driver.findElement(By.xpath(".//*[@id='welcome-menu']/ul/li[2]/a")).click();
+	}
+
+	@Then("^I should be successfully logged out$")
+	public void i_should_be_successfully_logged_out() throws Throwable {
+	   Assert.assertEquals(properties.getProperty("afterLogoutUrl"), driver.getCurrentUrl());
+	}
+	
+	//}}
+	
 	
 	//{{ Admin Login test with valid credential
 	
