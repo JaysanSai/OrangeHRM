@@ -14,7 +14,7 @@ public class WebDriverConfig {
 		
 		if (driver==null){
 			FirefoxProfile profile = new FirefoxProfile();
-			driver = new FirefoxDriver(new FirefoxBinary(new File("/home/ec2-user/firefox/firefox-bin")), profile);
+			driver = new FirefoxDriver(new FirefoxBinary(new File("/home/ec2-user/firefox/firefox")), profile);
 			//driver=new FirefoxDriver();
 		}
 		return driver;
